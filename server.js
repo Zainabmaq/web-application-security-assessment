@@ -1,4 +1,12 @@
 "use strict";
+const winston = require("winston");
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console(),
+        new winston.transports.File({ filename: "security.log" })
+    ]
+});
+logger.info("Application started");
 
 const express = require("express");
 const favicon = require("serve-favicon");
