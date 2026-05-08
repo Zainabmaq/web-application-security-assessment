@@ -1,3 +1,4 @@
+const validator = require("validator");
 const SessionHandler = require("./session");
 const ProfileHandler = require("./profile");
 const BenefitsHandler = require("./benefits");
@@ -30,8 +31,14 @@ const index = (app, db) => {
     app.get("/", sessionHandler.displayWelcomePage);
 
     // Login form
-    app.get("/login", sessionHandler.displayLoginPage);
-    app.post("/login", sessionHandler.handleLoginRequest);
+    app.post("/login", (req, res, next) => {
+    const email = req.body.userName;
+    if (!validator.isEmail(email)) {
+        return res.status(400).send("Invalid email format");
+    }
+    next();
+}, sessionHandler.handleLoginRequest);
+    
 
     // Signup form
     app.get("/signup", sessionHandler.displaySignupPage);
